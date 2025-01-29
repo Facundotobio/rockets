@@ -1,10 +1,15 @@
 import { extendTheme } from '@chakra-ui/react';
+import nubesImage from '../assets/nubes.jpg';
 
 const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: 'gray.200', // fondo global
+        bgImage: `url(${nubesImage})`,
+        bgSize: 'cover',
+        bgPosition: 'center',
+        bgRepeat: 'no-repeat',      
+
       },
     },
   }

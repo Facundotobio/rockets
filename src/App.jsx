@@ -5,12 +5,14 @@ import { Heading, Image, Button, Flex } from '@chakra-ui/react';
 import { LaunchItem } from './components/LaunchItem';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight  } from "react-icons/ai";
 import { DNA } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
 
 export function App() {
   const [lauches, setLaunches] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const launchesPerPage = 4;
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,15 +40,28 @@ export function App() {
     }
   };
 
+  const handleLogout = () => {
+    navigate('/'); 
+  };
+
+  const handleAbout = () => {
+    navigate('/about');
+  };
+
   return (
     <>
       <Flex justify="space-between" align="center">
         <Image src={logo} alt="SpaceX" width={500} height={100} m={6} />
-        <Button onClick={() => logout({})} bg='red.300' _hover={{ bg: 'red' }} style={{ marginRight: '30px', marginBottom: '70px', alignSelf: 'flex-end' }}>
-          Logout
-        </Button>
+        <Flex align="center" mr={6}>
+          <Button color="white" onClick={handleAbout} bg='blue.700' _hover={{ bg: 'blue.900' }} mr={4}>
+            About this page
+          </Button>
+          <Button color="white" onClick={handleLogout} bg='red.500' _hover={{ bg: 'red' }}>
+            Logout
+          </Button>
+        </Flex>
       </Flex>
-      <Heading as='h1' size='lg' ml={6} color={'black'} textShadow="13px 13px 12px #000000">SpaceX Launches</Heading>
+      <Heading as='h1' size='lg' ml={8} color={'white'} textShadow="13px 13px 12px #000000">SpaceX Launches</Heading>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {loading ? ( // Mostrar el spinner mientras se carga
           <DNA
@@ -68,61 +83,24 @@ export function App() {
         )}
         {/* Botones de paginado */}
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px', marginBottom: '30px' }}>
-          <Button onClick={() => setCurrentPage(1)} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" bg={'red.100'} _hover={{ bg: 'red.200' }} style={{ marginRight: '20px' }}>
+          <Button onClick={() => setCurrentPage(1)} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" bg={'red.300'} _hover={{ bg: 'red.200' }} style={{ marginRight: '20px' }}>
             <AiOutlineDoubleLeft />
           </Button>
-          <Button bg={'red.100'} _hover={{ bg: 'red.200' }} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" onClick={() => paginate('prev')} disabled={currentPage === 1}>
+          <Button bg={'red.200'} _hover={{ bg: 'red.200' }} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" onClick={() => paginate('prev')} disabled={currentPage === 1}>
             <AiOutlineDoubleLeft style={{ marginRight: '20px' }} />
             Previus
           </Button>
           <span style={{ margin: '0 20px', border: '1px solid black', padding: '8px', borderRadius: '80%', background: 'white', fontWeight: 'bold' }}>{currentPage}</span>
-          <Button bg={'green.100'} _hover={{ bg: 'green.200' }} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" onClick={() => paginate('next')} disabled={currentPage >= Math.ceil(lauches.length / launchesPerPage)}>
+          <Button bg={'green.200'} _hover={{ bg: 'green.200' }} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" onClick={() => paginate('next')} disabled={currentPage >= Math.ceil(lauches.length / launchesPerPage)}>
             Next
           </Button>
-          <Button onClick={() => setCurrentPage(Math.ceil(lauches.length / launchesPerPage))} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" bg={'green.100'} _hover={{ bg: 'green.200' }} style={{ marginLeft: '20px' }}>
+          <Button onClick={() => setCurrentPage(Math.ceil(lauches.length / launchesPerPage))} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" bg={'green.300'} _hover={{ bg: 'green.200' }} style={{ marginLeft: '20px' }}>
             <AiOutlineDoubleRight />
           </Button>
         </div>
       </div>
     </>
   );
-  // return (
-  //   <>
-  //     <Flex justify="space-between" align="center">
-  //     <Image src={logo} alt="SpaceX" width={500} height={100} m={6} />
-  //       <Button onClick={() => logout({   })} bg='red.300' _hover={{ bg: 'red' }} style={{ marginRight: '30px', marginBottom:'70px', alignSelf: 'flex-end' }}>
-  //         Logout
-  //       </Button>
-  //     </Flex>
-  //     <Heading as='h1' size='lg' ml={6} color={'black'} textShadow="13px 13px 12px #000000">SpaceX Launches</Heading>
-  //     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  //     <section style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  //         {currentLaunches.map(launch => (
-  //           <div style={{ width: '600px', marginBottom: '4px' }} key={launch.flight_number}>
-  //             <LaunchItem launch={launch} />
-  //           </div>
-  //         ))}
-  //       </section>
-  //     {/* Botones de paginado */}
-  //     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'20px', marginBottom:'30px'}}>
-  //       <Button onClick={() => setCurrentPage(1)} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" bg={'red.100'} _hover={{ bg: 'red.200' }} style={{ marginRight: '20px' }}>
-  //         <AiOutlineDoubleLeft />
-  //       </Button>
-  //       <Button bg={'red.100'} _hover={{ bg: 'red.200' }} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" onClick={() => paginate('prev')} disabled={currentPage === 1} >
-  //       <AiOutlineDoubleLeft style={{ marginRight: '20px' }}/>
-  //         Previus
-  //       </Button>
-  //       <span style={{ margin: '0 20px', border:'1px solid black', padding:'8px', borderRadius:'80%', background:'white', fontWeight: 'bold'}}>{currentPage}</span>
-  //       <Button bg={'green.100'} _hover={{ bg: 'green.200' }} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" onClick={() => paginate('next')} disabled={currentPage >= Math.ceil(lauches.length / launchesPerPage)}>
-  //         Next
-  //       </Button>
-  //       <Button onClick={() => setCurrentPage(Math.ceil(lauches.length / launchesPerPage))} boxShadow="14px 8px 16px rgba(0, 0, 0, 0.3)" bg={'green.100'} _hover={{ bg: 'green.200' }} style={{ marginLeft: '20px' }}>
-  //         <AiOutlineDoubleRight />
-  //       </Button> 
-  //     </div>
-  //     </div>
-  //   </>
-  // );
 }
 
 export default App;
